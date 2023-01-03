@@ -61,18 +61,7 @@ def compare2c(comp):
     ops = comp.ops  # List?
     r = comp.comparators  # Why it's a list?
 
-    total = ""
-
-    '''
-    if type(l) is ast.Name:
-        total += l.id
-    elif type(l) is ast.Constant:
-        total += wrap(type(l.value).__name__, l.value)
-    else:
-        error("Unknown type to left compare operator: %s" % type(l).__name__)
-    '''
-    total += get_value_ast(l)
-
+    total = get_value_ast(l)
     total += f" {op2c(ops[0])} "
 
     if len(r) > 1:
@@ -80,15 +69,6 @@ def compare2c(comp):
         exit(1)
 
     r = r[0]  # Remoce when support multi-comparators
-
-    '''
-    if type(r) is ast.Name:
-        total += r.id
-    elif type(r) is ast.Constant:
-        total += wrap(type(r.value).__name__, r.value)
-    else:
-        error("Unknown type to right compare operator: %s" % type(r).__name__)
-    '''
 
     total += get_value_ast(r)
 
@@ -266,7 +246,6 @@ def convert2c(ast_body, create_main: bool = True, only_main: bool = False, main_
                 handled = handle_func(fname, fargs, varargs=args_prog)
 
                 fcall = f"{fname}({args2c(fargs)});"
-                # print("!!!: ", handled, "vs.", fcall)
                 mainblock += handled+";\n"
             else:
                 error("Unknown Expr value type: %s", type(expval))
@@ -326,7 +305,6 @@ if __name__ == "__main__":
     parser.add_argument("file", type=str)
 
     args = parser.parse_args()
-
     filename = args.file
 
     with open(filename, "r") as f:
